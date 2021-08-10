@@ -18,16 +18,14 @@ class Image(models.Model):
 
     def save(self, *args, **kwargs):
         try:
-            print(self.picture.path)
             img = load_img(self.picture.path, target_size=(299, 299))
-            print(img)
             img_array = img_to_array(img)
             to_predict = np.expand_dims(img_array, axis=0)
             preprocess = preprocess_input(to_predict)
             model = InceptionResNetV2(weights='imagenet')
             predication = model.predict(preprocess)
             decode = decode_predictions(predication)
-            print(decode)
+            self.classified = str(decode)
         except Exception as e:
             print(e)
         super().save(*args, **kwargs)
