@@ -1,69 +1,32 @@
+import { PolarAngleAxis, PolarGrid, PolarRadiusAxis, Radar, RadarChart, ResponsiveContainer } from 'recharts';
 import React, { Component } from "react";
-import Dropzone from "react-dropzone";
-import Button from "@material-ui/core/Button";
-import { withStyles } from "@material-ui/core/styles";
+
 import Backdrop from "@material-ui/core/Backdrop";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import { BsCardImage } from "react-icons/bs";
+import Button from "@material-ui/core/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import ClassifierTheme from "./ClassifierTheme";
+import Dropzone from "react-dropzone";
 import axios from "axios";
 import { withSnackbar } from "notistack";
-
-
-const styles = (theme) => ({
-  back: {
-    padding: theme.spacing(1),
-    background: "#e0e0e0",
-    width: "100%"
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff"
-  },
-  textmuted: {
-    color: "#bdbdbd"
-  },
-  imagefontsize: {
-    fontSize: "3rem",
-    "@media (min-width:600px)": {
-      fontSize: "3rem"
-    },
-    [theme.breakpoints.up("md")]: {
-      fontSize: "3rem"
-    },
-    color: "#bdbdbd"
-  }
-});
+import { withStyles } from "@material-ui/core/styles";
 
 class Classifier extends Component {
   state = {
     open: false,
     files: [],
-    currentimage: null
+    currentClassification: null
   };
-  handleClose = () => {
-    this.setState({ open: false });
-  };
-  handleToggle = () => {
-    this.setState({ open: true });
-  };
-  loadImage = (files) => {
-    // add processing here
-    console.log(files[0].name);
-    console.log(this.state.files[0].name);
-    this.handleClose();
-  };
-  
+
   onDrop = (files) => {
     this.setState(
       {
         files,
-        open: true
       },
       () => {
         console.log(this.state.files);
       }
     );
-    this.loadImage(files);
     this.handleConnectionLoss("File is loaded", "success");
   };
 
@@ -72,6 +35,8 @@ class Classifier extends Component {
     formData.append("picture", this.state.files[0], this.state.files[0].name);
 
     this.handleConnectionLoss("Processing ...", "warning");
+    this.setState({ open: true });
+
     axios
       .post("http://127.0.0.1:8000/api/images/", formData, {
         headers: {
@@ -80,12 +45,13 @@ class Classifier extends Component {
         }
       })
       .then((resp) => {
-        //        this.getImages(resp);
-        console.log(resp);
+        this.getImages(resp);
+        this.setState({ open: false });
         this.handleConnectionLoss("Classified", "success");
       })
       .catch((err) => {
         console.log(err);
+        this.setState({ open: false });
         this.handleConnectionLoss("Error", "error");
       });
   };
@@ -99,6 +65,21 @@ class Classifier extends Component {
       })
       .then((resp) => {
         console.log(resp);
+
+        let data = []
+        let classifiedArray = resp.data.classified.replace(/['([\]]/g, '').slice(0, -1).split('),')
+
+        classifiedArray.forEach((item) => {
+          const itemArray = item.split(',')
+          data.push({
+            subject: itemArray[1],
+            A: parseFloat(itemArray[2]),
+            fullMark: 1,
+          })
+        })
+
+        console.log(data)
+        this.setState({ currentClassification: data });
       })
       .catch((err) => {
         console.log(err);
@@ -156,10 +137,21 @@ class Classifier extends Component {
           )}
         </Dropzone>
 
+        {this.state.currentClassification &&
+
+          <ResponsiveContainer width="100%" height={300}>
+            <RadarChart cx="50%" cy="50%" outerRadius="80%" data={this.state.currentClassification}>
+              <PolarGrid />
+              <PolarAngleAxis dataKey="subject" />
+              <PolarRadiusAxis />
+              <Radar name="Mike" dataKey="A" stroke="#ff6363" fill="#ff6363" fillOpacity={0.6} />
+            </RadarChart>
+          </ResponsiveContainer>
+        }
+
         <Backdrop
           className={classes.backdrop}
           open={this.state.open}
-          onClick={this.handleClose}
         >
           <CircularProgress color="inherit" />
         </Backdrop>
@@ -168,4 +160,4 @@ class Classifier extends Component {
   }
 }
 
-export default withSnackbar(withStyles(styles)(Classifier));
+export default withSnackbar(withStyles(ClassifierTheme)(Classifier));

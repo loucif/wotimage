@@ -4,6 +4,7 @@ from keras_preprocessing.image import load_img, img_to_array
 from keras_preprocessing.image import load_img, img_to_array
 from tensorflow.keras.applications.inception_resnet_v2 import decode_predictions, preprocess_input, InceptionResNetV2
 import numpy as np
+import PIL as pl
 
 # Create your models here.
 
@@ -18,14 +19,16 @@ class Image(models.Model):
 
     def save(self, *args, **kwargs):
         try:
-            img = load_img(self.picture.path, target_size=(299, 299))
-            img_array = img_to_array(img)
+            plImage = pl.Image.open(self.picture)
+#            img = load_img(self.picture.path, target_size=(299, 299))
+#            img_array = img_to_array(img)
+            img_array = img_to_array(plImage.resize(((299, 299))))
             to_predict = np.expand_dims(img_array, axis=0)
             preprocess = preprocess_input(to_predict)
             model = InceptionResNetV2(weights='imagenet')
             predication = model.predict(preprocess)
             decode = decode_predictions(predication)
-            self.classified = str(decode)
+            self.classified = str(decode[0])
         except Exception as e:
             print(e)
         super().save(*args, **kwargs)
