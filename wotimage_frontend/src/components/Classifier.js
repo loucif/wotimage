@@ -72,7 +72,7 @@ class Classifier extends Component {
         classifiedArray.forEach((item) => {
           const itemArray = item.split(',')
           data.push({
-            subject: itemArray[1],
+            subject: itemArray[1].concat('/',itemArray[2]),
             A: parseFloat(itemArray[2]),
             fullMark: 1,
           })

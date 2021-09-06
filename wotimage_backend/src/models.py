@@ -28,7 +28,6 @@ class Image(models.Model):
             predication = model.predict(preprocess)
             decode = decode_predictions(predication)
             self.classified = str(decode[0])
-            print(decode[0])
         except Exception as e:
             print(e)
         super().save(*args, **kwargs)
