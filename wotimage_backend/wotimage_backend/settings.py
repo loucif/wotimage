@@ -84,8 +84,14 @@ WSGI_APPLICATION = 'wotimage_backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'djongo',
+        'NAME': 'image',
+        'ENFORCE_SCHEMA': False,
+        'CLIENT': {
+            'host': f'mongodb://{config("USER")}:{config("PASSWORD")}@db:27017'
+        }  
     }
 }
 
