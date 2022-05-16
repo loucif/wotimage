@@ -18,8 +18,8 @@ class Image(models.Model):
 
     def save(self, *args, **kwargs):
         try:
-#            plImage = pl.Image.open(self.picture)
-#            img_array = img_to_array(plImage.resize(((299, 299))))
+            #            plImage = pl.Image.open(self.picture)
+            #            img_array = img_to_array(plImage.resize(((299, 299))))
             img = load_img(self.picture, target_size=(299, 299))
             img_array = img_to_array(img)
             to_predict = np.expand_dims(img_array, axis=0)

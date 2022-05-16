@@ -5,7 +5,7 @@ def load_img(obj, target_size):
 
     img = pl.Image.open(obj)
     img = img.convert('RGB')
-    width_height_tuple = (target_size[1], target_size[0])    
+    width_height_tuple = (target_size[1], target_size[0])
     print(img.mode)
     if img.size != width_height_tuple:
         width, height = img.size

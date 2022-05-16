@@ -1,4 +1,4 @@
-version: '2'
+version: '3.8'
 
 services:
   app:
@@ -6,10 +6,11 @@ services:
       context: ..
       dockerfile: .devcontainer/Dockerfile
       args:
-        # [Choice] Python version: 3, 3.8, 3.7, 3.6
-        VARIANT: 3
-        # [Choice] Install Node.js
-        INSTALL_NODE: "true"
+        # Update 'VARIANT' to pick a version of Python: 3, 3.10, 3.9, 3.8, 3.7, 3.6
+        # Append -bullseye or -buster to pin to an OS version.
+        # Use -bullseye variants on local arm64/Apple Silicon.
+        VARIANT: 3-bullseye
+        # Optional Node.js version to install
         NODE_VERSION: "lts/*"
         # On Linux, you may need to update USER_UID and USER_GID below if not your local UID is not 1000.
         USER_UID: 1000
@@ -20,44 +21,64 @@ services:
 
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
+
     # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.
-    links:
-      - db
-    depends_on:
-      - db
-    
-    # Use "forwardPorts" in **devcontainer.json** to forward an app port locally.
-    # (Adding the "ports" property to this file will not forward from a Codespace.)
-    
-  db:
-    image: mongo:latest
-    restart: unless-stopped
-    volumes:
-      - mongodb-data:/data/db
-    env_file: .env
-    ports:
-      - "27017:27017"
-    # Uncomment to change startup options
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${USER}
-      MONGO_INITDB_ROOT_PASSWORD: ${PASSWORD}
-      MONGO_INITDB_DATABASE: your-database-here
-     
+    # links:
+    #   - db
+    # depends_on:
+    #   - db
+    #     network_mode: service:db
+
+    #     # Uncomment the next line to use a non-root user for all processes.
+    #     # user: vscode
+
+    #     # Use "forwardPorts" in **devcontainer.json** to forward an app port locally.
+    #     # (Adding the "ports" property to this file will not forward from a Codespace.)
+
+    #   db:
+    #     image: postgres:latest
+    #     restart: unless-stopped
+    #     volumes:
+    #       - postgres-data:/var/lib/postgresql/data
+    #     environment:
+    #       POSTGRES_USER: postgres
+    #       POSTGRES_DB: postgres
+    #       POSTGRES_PASSWORD: postgres
+
+    #     # Add "forwardPorts": ["5432"] to **devcontainer.json** to forward PostgreSQL locally.
+    #     # (Adding the "ports" property to this file will not forward from a Codespace.)
+
+    # volumes:
+    #   postgres-data:
+
+  # db:
+  #   image: mongo:latest
+  #   restart: unless-stopped
+  #   volumes:
+  #     - mongodb-data:/data/db
+  #   #    env_file: .env
+  #   ports:
+  #     - 27017:27017
+  #   # Uncomment to change startup options
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: loucif
+  #     MONGO_INITDB_ROOT_PASSWORD: loucif
+  #     MONGO_INITDB_DATABASE: your-database-here
     # Add "forwardPorts": ["27017"] to **devcontainer.json** to forward MongoDB locally.
     # (Adding the "ports" property to this file will not forward from a Codespace.)
 
-  mongo-express:
-    image: mongo-express:latest
-    restart: always
-    env_file: .env
-    environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: ${USER}
-      ME_CONFIG_MONGODB_ADMINPASSWORD: ${PASSWORD}
-      ME_CONFIG_MONGODB_URL: mongodb://${USER}:${PASSWORD}@db:27017/
-    depends_on:
-      - db
-    ports:
-      - "8081:8081"
-    
-volumes:
-  mongodb-data:
+  # mongo-express:
+  #   image: mongo-express:latest
+  #   restart: always
+  #   # #    env_file: .env
+  #   environment:
+  #     ME_CONFIG_MONGODB_ADMINUSERNAME: loucif
+  #     ME_CONFIG_MONGODB_ADMINPASSWORD: loucif
+  #     ME_CONFIG_MONGODB_URL: mongodb://loucif:loucif@db:27017/
+  #   depends_on:
+  #     - db
+  #   ports:
+  #     - 8081:8081  
+
+# volumes:
+#   mongodb-data:
