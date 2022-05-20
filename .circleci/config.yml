@@ -8,7 +8,7 @@ jobs:
       - checkout
       - run:
           name: install external libraries for Pillow
-          command: sudo apt install libjpeg-dev zlib1g-dev
+          command: sudo apt install libjpeg-dev
       - run:
           name: install dependencies
           command: pip install -r wotimage_backend/requirements.txt
