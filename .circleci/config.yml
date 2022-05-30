@@ -15,7 +15,7 @@ jobs:
       - run:
           name: run tests
           command: python manage.py test
-
+          
 workflows:
   build-and-test-workflow:
     jobs:
