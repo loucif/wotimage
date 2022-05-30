@@ -12,9 +12,9 @@ jobs:
       - run:
           name: install dependencies
           command: pip install -r wotimage_backend/requirements.txt
-      - run:
-          name: lint
-          command: pylint wotimage_backend/src wotimage_backend/wotimage_backend
+      #- run:
+          #name: lint
+          #command: pylint wotimage_backend/src wotimage_backend/wotimage_backend
       - run:
           name: run tests
           command: python manage.py test
