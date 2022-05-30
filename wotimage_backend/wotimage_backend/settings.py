@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'corsheaders',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -145,7 +146,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # A list of origins that are authorized to make cross-site HTTP requests. Defaults to []
 
+# CORS_ORIGIN_ALLOW_ALL = True
+# ALLOWED_HOSTS = ['*']
+
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "https://zrdq7.csb.app"
 ]
