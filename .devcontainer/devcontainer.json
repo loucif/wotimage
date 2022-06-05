@@ -29,8 +29,7 @@
 		"ms-python.python",
 		"ms-python.vscode-pylance",
 		"redhat.vscode-yaml",
-		"dbaeumer.vscode-eslint",
-		"mongodb.mongodb-vscode" 
+		"dbaeumer.vscode-eslint"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.

@@ -17,17 +17,14 @@ class Image(models.Model):
         return "Image classified at {}".format(timezone.localtime(self.uploaded).strftime('%Y-%m-%d %H:%M'))
 
     def save(self, *args, **kwargs):
-        try:
-            #            plImage = pl.Image.open(self.picture)
-            #            img_array = img_to_array(plImage.resize(((299, 299))))
-            img = load_img(self.picture, target_size=(299, 299))
-            img_array = img_to_array(img)
-            to_predict = np.expand_dims(img_array, axis=0)
-            preprocess = preprocess_input(to_predict)
-            model = InceptionResNetV2(weights='imagenet')
-            predication = model.predict(preprocess)
-            decode = decode_predictions(predication)
-            self.classified = str(decode[0])
-        except Exception as e:
-            print(e)
+        # plImage = pl.Image.open(self.picture)
+        # img_array = img_to_array(plImage.resize(((299, 299))))
+        img = load_img(self.picture, target_size=(299, 299))
+        img_array = img_to_array(img)
+        to_predict = np.expand_dims(img_array, axis=0)
+        preprocess = preprocess_input(to_predict)
+        model = InceptionResNetV2(weights='imagenet')
+        predication = model.predict(preprocess)
+        decode = decode_predictions(predication)
+        self.classified = str(decode[0])
         super().save(*args, **kwargs)

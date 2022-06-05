@@ -2,7 +2,6 @@ django==3.2.4
 djangorestframework==3.12.4
 django-cors-headers==3.7.0
 Pillow==8.2.0
-#keras==2.9.0
 pylint-django==2.4.4
 tensorflow==2.8.0
 python-decouple==3.4
@@ -10,3 +9,4 @@ djongo==1.3.6
 dnspython==2.1.0
 pymongo==3.12.1
 drf-yasg==1.20.0
+protobuf==3.20  #Fix:https://developers.google.com/protocol-buffers/docs/news/2022-05-06#python-updates

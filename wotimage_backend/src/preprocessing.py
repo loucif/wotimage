@@ -1,6 +1,5 @@
 import PIL as pl
 
-
 def load_img(obj, target_size):
 
     img = pl.Image.open(obj)
