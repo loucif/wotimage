@@ -91,7 +91,7 @@ DATABASES = {
         # 'NAME': BASE_DIR / 'db.sqlite3',
         'ENGINE': 'djongo',
         'NAME': 'image',
-        'ENFORCE_SCHEMA': False,
+        'ENFORCE_SCHEMA': True,
         'CLIENT': {
             # 'host': f'mongodb://{config("USER")}:{config("PASSWORD")}@db:27017'
             'host': f'mongodb+srv://{config("DB_USER")}:{config("DB_PASSWORD")}@cluster0.6qpde.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
