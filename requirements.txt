@@ -5,6 +5,7 @@ astunparse==1.6.3
 cachetools==5.2.0
 certifi==2022.5.18.1
 charset-normalizer==2.0.12
+cloudinary==1.29.0
 coreapi==2.3.3
 coreschema==0.0.4
 dill==0.3.5.1
