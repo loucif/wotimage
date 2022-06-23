@@ -3,6 +3,7 @@ from django.utils import timezone
 from keras_preprocessing.image import img_to_array
 from keras.applications import xception  # , inception_resnet_v2
 import numpy as np
+from cloudinary.models import CloudinaryField
 from .preprocessing import load_img
 
 
@@ -10,7 +11,8 @@ from .preprocessing import load_img
 
 
 class Image(models.Model):
-    picture = models.ImageField()
+    #picture = models.ImageField()
+    picture = CloudinaryField()
     classified = models.CharField(max_length=200, blank=True)
     uploaded = models.DateTimeField(auto_now_add=True)
 
