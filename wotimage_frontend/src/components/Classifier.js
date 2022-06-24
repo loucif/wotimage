@@ -38,7 +38,7 @@ class Classifier extends Component {
     this.setState({ open: true });
 
     axios
-      .post("http://127.0.0.1:8000/api/images/", formData, {
+      .post(process.env.REACT_APP_API_BACKEND_URL, formData, {
         headers: {
           accept: "application/json",
           "content-type": "multipart/form-data"
@@ -58,7 +58,7 @@ class Classifier extends Component {
 
   getImages = (obj) => {
     axios
-      .get("http://127.0.0.1:8000/api/images/".concat(obj.data.id, "/"), {
+      .get(process.env.REACT_APP_API_BACKEND_URL.concat(obj.data.id, "/"), {
         headers: {
           accept: "application/json"
         }
@@ -72,7 +72,7 @@ class Classifier extends Component {
         classifiedArray.forEach((item) => {
           const itemArray = item.split(',')
           data.push({
-            subject: itemArray[1].concat('/',itemArray[2]),
+            subject: itemArray[1].concat('/', itemArray[2]),
             A: parseFloat(itemArray[2]),
             fullMark: 1,
           })
